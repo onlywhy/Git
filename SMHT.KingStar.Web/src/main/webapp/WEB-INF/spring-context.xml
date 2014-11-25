@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                        http://www.springframework.org/schema/mvc 
+                        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+                        http://www.springframework.org/schema/util 
+                        http://www.springframework.org/schema/util/spring-util-3.2.xsd
+                        http://www.springframework.org/schema/context  
+                        http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+	
+	<context:property-placeholder location="/WEB-INF/spring.properties"/>
+	<!-- WebappContext -->
+	<bean id="kingStarWebAppContext" class="smht.kingstar.context.KingStarWebAppContext">
+        <property name="userInfoService" ref="userInfoService" />
+    </bean>
+    
+	<bean id="userInfoService" class="smht.kingstar.service.impl.UserInfoServiceImpl">
+        <property name="dataSourceInfo" ref="kingstarDataSource" />
+    </bean>
+    
+    <bean id="kingstarDataSource" class="smht.kingstar.service.DataSourceInfo">
+        <property name="dataSource" ref="ksDataSource" />
+        <property name="sqlDialect">
+          	<value>MYSQL</value>
+        </property>
+    </bean>
+    
+    <bean id="ksDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName"><value>com.mysql.jdbc.Driver</value></property>
+        <property name="url"><value>jdbc:${kingstar.db.url}</value></property>
+        <property name="username"><value>${kingstar.db.username}</value></property>
+        <property name="password"><value>${kingstar.db.password}</value></property>
+    </bean>
+    
+</beans>
